@@ -1,0 +1,12 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:debian
+    container_name: "cintillosMascotas"
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: cxgs7102
+      MYSQL_DATABASE: cintillosMascotas
+    volumes:
+      - ./master-scripts:/docker-entrypoint-initdb.d

@@ -1,0 +1,69 @@
+CONSULTA 1: Obtener los detalles de todos los producto: 
+SELECT NombreProducto FROM Producto;
+
+CONSULTA 2: Obtener los nombres de todos los empleados junto con su información de contacto correspondiente: 
+SELECT NombreEmpleado, Telefono, CorreoElectronico FROM Empleados;
+
+CONSULTA 3: Obtener el número total de vacunaciones administradas para cada vacuna: 
+SELECT v.NombreVacuna, COUNT(*) AS TotalVacunaciones
+FROM Vacunas v
+JOIN Vacunacion va ON v.IDVacuna = va.IDVacuna
+GROUP BY v.NombreVacuna;
+
+CONSULTA 4: Obtener los detalles de todas las compras realizadas en o después del '2023-05-10', incluyendo el monto total de la compra: 
+SELECT c.*, dc.Cantidad, p.NombreProducto, p.PrecioUnitario
+FROM Compra c
+JOIN DetallesCompra dc ON c.IDCompra = dc.IDCompra
+JOIN Producto p ON dc.IDProducto = p.IDProducto
+WHERE c.FechaCompra >= '2023-05-10';
+
+CONSULTA 5: Obtener la edad promedio de las mascotas según su raza: 
+SELECT Raza, AVG(Edad) AS PromedioEdad
+FROM Mascotas
+GROUP BY Raza;
+
+TRIGGER 1: Insertar una compra
+INSERT INTO Compra (IDCompra, TotalCompra)
+VALUES (9, 0);
+
+Insertar un detalle de compra relacionado con la compra anterior
+INSERT INTO DetallesCompra (IDDetalleC, IDCompra, Cantidad, PrecioUnitario)
+VALUES (9, 9, 2, 10.99);
+
+TRIGGER 2: Intentar insertar una mascota con una edad negativa
+INSERT INTO Mascotas (Nombre, Edad)
+VALUES ('Max', -2);
+
+TRIGGER 3: Intentar insertar una mascota con un IDPropietario inexistente
+INSERT INTO Mascotas (NombreMascota, IDPropietario)
+VALUES ('Firulais', 10);
+
+TRIGGER 4: 
+INSERT INTO Vacunacion (IDMascota, IDVacuna, FechaVacunacion)
+VALUES (1, 2, '2023-05-13');
+
+TRIGGER 5: Para eliminar
+DELETE FROM Solicitud
+WHERE IDSolicitud = 1;
+
+--Inserta una o varias filas en la tabla "Solicitud" con diferentes estados, incluyendo al menos una fila con el estado "Aprobada".
+INSERT INTO Solicitud (Descripcion, Estado)
+VALUES ('Solicitud 1', 'Pendiente'),
+       ('Solicitud 2', 'Aprobada'),
+       ('Solicitud 3', 'Rechazada');
+
+
+STORE PROCEDURE 1
+CALL ObtenerProductosPorPrecio(10.00, 30.00);
+
+STORE PROCEDURE 2
+CALL ObtenerComprasPorFecha('2023-05-12');
+
+STORE PROCEDURE 3
+CALL ObtenerMascotasPorPropietario('Juan Perez');
+
+STORE PROCEDURE 4
+CALL ObtenerSolicitudesPendientes();
+
+STORE PROCEDURE 5
+CALL RegistrarCompra('2023-05-13', 120.00, 1, 3);
